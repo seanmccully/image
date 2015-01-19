@@ -32,9 +32,9 @@ DLL_EXPORT int luaopen_libpng(lua_State *L)
   libpng_DoubleMain_init(L);
   libpng_ByteMain_init(L);
 
-  luaL_register(L, "libpng.double", libpng_DoubleMain__);
-  luaL_register(L, "libpng.float", libpng_FloatMain__);
-  luaL_register(L, "libpng.byte", libpng_ByteMain__);
+  luaL_Register(L, "libpng.double", libpng_DoubleMain__);
+  luaL_Register(L, "libpng.float", libpng_FloatMain__);
+  luaL_Register(L, "libpng.byte", libpng_ByteMain__);
 
   return 1;
 }

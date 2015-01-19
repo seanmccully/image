@@ -91,7 +91,7 @@ static int libjpeg_(Main_size)(lua_State *L)
   struct my_error_mgr jerr;
   /* More stuff */
   FILE * infile;		/* source file */
-  
+
   const char *filename = luaL_checkstring(L, 1);
 
   /* In this example we want to open the input file before doing anything else,
@@ -104,9 +104,9 @@ static int libjpeg_(Main_size)(lua_State *L)
   {
     luaL_error(L, "cannot open file <%s> for reading", filename);
   }
-  
+
   /* Step 1: allocate and initialize JPEG decompression object */
-  
+
   /* We set up the normal JPEG error routines, then override error_exit. */
   cinfo.err = jpeg_std_error(&jerr.pub);
   jerr.pub.error_exit = libjpeg_(Main_error);
@@ -194,10 +194,10 @@ static int libjpeg_(Main_load)(lua_State *L)
 
   THTensor *tensor = NULL;
   const int load_from_file = luaL_checkint(L, 1);
-  
+
   if (load_from_file == 1) {
     const char *filename = luaL_checkstring(L, 2);
-    
+
     /* In this example we want to open the input file before doing anything else,
      * so that the setjmp() error recovery below can assume the file is open.
      * VERY IMPORTANT: use "b" option to fopen() if you are on a machine that
@@ -215,7 +215,7 @@ static int libjpeg_(Main_load)(lua_State *L)
     inmem_size = src->size[0];
     infile = NULL;
   }
-  
+
   /* Step 1: allocate and initialize JPEG decompression object */
 
   /* We set up the normal JPEG error routines, then override error_exit. */
@@ -269,7 +269,7 @@ static int libjpeg_(Main_load)(lua_State *L)
    * output image dimensions available, as well as the output colormap
    * if we asked for color quantization.
    * In this example, we need to make an output work buffer of the right size.
-   */ 
+   */
 
   /* Make a one-row-high sample array that will go away when done with image */
 
@@ -289,11 +289,11 @@ static int libjpeg_(Main_load)(lua_State *L)
      * more than one scanline at a time if that's more convenient.
      */
     (void) jpeg_read_scanlines(&cinfo, buffer, 1);
-    
+
     for(k = 0; k < cinfo.output_components; k++)
     {
       for(i = 0; i < cinfo.output_width; i++)
-        THTensor_(set3d)(tensor, k, cinfo.output_scanline-1, i, 
+        THTensor_(set3d)(tensor, k, cinfo.output_scanline-1, i,
                          (real)buffer[0][cinfo.output_components*i+k]);
     }
   }
@@ -335,7 +335,7 @@ static int libjpeg_(Main_load)(lua_State *L)
 int libjpeg_(Main_save)(lua_State *L) {
   /* get args */
   const char *filename = luaL_checkstring(L, 1);
-  THTensor *tensor = luaT_checkudata(L, 2, torch_Tensor);  
+  THTensor *tensor = luaT_checkudata(L, 2, torch_Tensor);
   THTensor *tensorc = THTensor_(newContiguous)(tensor);
   real *tensor_data = THTensor_(data)(tensorc);
 
@@ -395,7 +395,7 @@ int libjpeg_(Main_save)(lua_State *L) {
   jpeg_stdio_dest(&cinfo, outfile);
 
   /* Setting the parameters of the output file here */
-  cinfo.image_width = width;	
+  cinfo.image_width = width;
   cinfo.image_height = height;
   cinfo.input_components = bytes_per_pixel;
   cinfo.in_color_space = color_space;
@@ -425,7 +425,7 @@ int libjpeg_(Main_save)(lua_State *L) {
   return 1;
 }
 
-static const luaL_reg libjpeg_(Main__)[] =
+static const luaL_Reg libjpeg_(Main__)[] =
 {
   {"size", libjpeg_(Main_size)},
   {"load", libjpeg_(Main_load)},

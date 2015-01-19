@@ -18,7 +18,7 @@ static THTensor * libpng_(read_png_file)(const char *file_name)
 
   int width, height;
   png_byte color_type;
-  
+
   png_structp png_ptr;
   png_infop info_ptr;
   png_bytep * row_pointers;
@@ -157,7 +157,7 @@ static void libpng_(write_png_file)(const char *file_name, THTensor *tensor)
   } else if (tensorc->nDimension == 2) {
     depth = 1;
     height = tensorc->size[0];
-    width = tensorc->size[1];    
+    width = tensorc->size[1];
   }
 
   /* depth check */
@@ -257,28 +257,28 @@ static int libpng_(Main_size)(lua_State *L) {
   fread_ret = fread(header, 1, 8, fp);
   if (fread_ret != 8)
     abort_("[get_png_size] File %s error reading header", filename);
-  
+
   if (png_sig_cmp(header, 0, 8))
     abort_("[get_png_size] File %s is not recognized as a PNG file", filename);
-  
+
   /* initialize stuff */
   png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-  
+
   if (!png_ptr)
     abort_("[get_png_size] png_create_read_struct failed");
-  
+
   info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr)
     abort_("[get_png_size] png_create_info_struct failed");
-  
+
   if (setjmp(png_jmpbuf(png_ptr)))
     abort_("[get_png_size] Error during init_io");
-  
+
   png_init_io(png_ptr, fp);
   png_set_sig_bytes(png_ptr, 8);
-  
+
   png_read_info(png_ptr, info_ptr);
-  
+
   width      = png_get_image_width(png_ptr, info_ptr);
   height     = png_get_image_height(png_ptr, info_ptr);
   color_type = png_get_color_type(png_ptr, info_ptr);
@@ -302,7 +302,7 @@ static int libpng_(Main_size)(lua_State *L) {
   /* read file */
   if (setjmp(png_jmpbuf(png_ptr)))
     abort_("[get_png_size] Error during read_image");
-  
+
   /* done with file */
   fclose(fp);
 
@@ -327,7 +327,7 @@ static int libpng_(Main_save)(lua_State *L) {
   return 0;
 }
 
-static const luaL_reg libpng_(Main__)[] =
+static const luaL_Reg libpng_(Main__)[] =
 {
   {"load", libpng_(Main_load)},
   {"size", libpng_(Main_size)},
